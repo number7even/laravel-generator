@@ -54,7 +54,7 @@ class PublishTemplateCommand extends PublishBaseCommand
     {
         $templateType = config('Number7even.laravel_generator.templates', 'core-templates');
 
-        $templatesPath = base_path('vendor/Number7evenlabs/'.$templateType.'/templates/scaffold');
+        $templatesPath = base_path('vendor/Number7even/'.$templateType.'/templates/scaffold');
 
         return $this->publishDirectory($templatesPath, $this->templatesDir.'/scaffold', 'Number7even-generator-templates/scaffold', true);
     }
