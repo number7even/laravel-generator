@@ -77,7 +77,7 @@ return [
     |
     */
 
-    'templates'         => 'admin-lite-templates',
+    'templates'         => 'admin-lite-template',
 
     /*
     |--------------------------------------------------------------------------
@@ -138,7 +138,7 @@ return [
     |
     */
 
-    'add_on' => [
+    /*'add_on' => [
 
         'swagger'       => false,
 
@@ -152,7 +152,7 @@ return [
 
             'menu_file'     => 'layouts/menu.blade.php',
         ],
-    ],
+    ],*/
 
     /*
     |--------------------------------------------------------------------------
