@@ -77,7 +77,7 @@ return [
     |
     */
 
-    'templates'         => 'admin-lite-template',
+    'templates'         => 'metronic-template',
 
     /*
     |--------------------------------------------------------------------------

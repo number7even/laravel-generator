@@ -1,4 +1,4 @@
-Number7Even Laravel Generator
+Number7even Laravel Generator
 ==============================
 
 [![Total Downloads](https://poser.pugx.org/number7even/laravel-generator/downloads)](https://packagist.org/packages/number7even/laravel-generator)
