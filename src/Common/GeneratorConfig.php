@@ -15,11 +15,14 @@ class GeneratorConfig
 
     public $nsApiController;
     public $nsApiRequest;
-
+	
     public $nsRequest;
     public $nsRequestBase;
     public $nsController;
     public $nsBaseController;
+	
+	public $nsTranslation_de;
+	public $nsTranslation_en;
 
     /* Path variables */
     public $pathRepository;
@@ -31,12 +34,14 @@ class GeneratorConfig
     public $pathApiRoutes;
     public $pathApiTests;
     public $pathApiTestTraits;
-
+	
     public $pathController;
     public $pathRequest;
     public $pathRoutes;
     public $pathViews;
     public $modelJsPath;
+	public $pathTranslationDe;
+	public $pathTranslationEn;
 
     /* Model Names */
     public $mName;
@@ -51,7 +56,7 @@ class GeneratorConfig
     public $mSlashPlural;
     public $mHuman;
     public $mHumanPlural;
-
+	public $mStudlyCase;
     public $forceMigrate;
 
     /* Generator Options */
@@ -114,7 +119,7 @@ class GeneratorConfig
         $this->nsApp = $commandData->commandObj->getLaravel()->getNamespace();
         $this->nsApp = substr($this->nsApp, 0, strlen($this->nsApp) - 1);
         $this->nsRepository = config('Number7even.laravel_generator.namespace.repository', 'App\Repositories').$prefix;
-        $this->nsModel = config('Number7even.laravel_generator.namespace.model', 'App\Models').$prefix;
+        $this->nsModel = config('Number7even.laravel_generator.namespace.model', 'App\Models');
         if (config('Number7even.laravel_generator.ignore_model_prefix', false)) {
             $this->nsModel = config('Number7even.laravel_generator.namespace.model', 'App\Models');
         }
@@ -129,11 +134,13 @@ class GeneratorConfig
             'App\Http\Controllers\API'
         ).$prefix;
         $this->nsApiRequest = config('Number7even.laravel_generator.namespace.api_request', 'App\Http\Requests\API').$prefix;
-
-        $this->nsRequest = config('Number7even.laravel_generator.namespace.request', 'App\Http\Requests').$prefix;
+		
+		$this->nsRequest = config('Number7even.laravel_generator.namespace.request', 'App\Http\Requests').$prefix;
         $this->nsRequestBase = config('Number7even.laravel_generator.namespace.request', 'App\Http\Requests');
         $this->nsBaseController = config('Number7even.laravel_generator.namespace.controller', 'App\Http\Controllers');
         $this->nsController = config('Number7even.laravel_generator.namespace.controller', 'App\Http\Controllers').$prefix;
+		$this->nsTranslation_de = config('Number7even.laravel_generator.namespace.translation_de', 'resources/lang/de').$prefix;
+		$this->nsTranslation_en = config('Number7even.laravel_generator.namespace.translation_en', 'resources/lang/en').$prefix;
     }
 
     public function loadPaths()
@@ -171,8 +178,8 @@ class GeneratorConfig
             'Number7even.laravel_generator.path.api_request',
             app_path('Http/Requests/API/')
         ).$prefix;
-
-        $this->pathApiRoutes = config('Number7even.laravel_generator.path.api_routes', app_path('Http/api_routes.php'));
+		
+		$this->pathApiRoutes = config('Number7even.laravel_generator.path.api_routes', app_path('Http/api_routes.php'));
 
         $this->pathApiTests = config('Number7even.laravel_generator.path.api_test', base_path('tests/'));
 
@@ -196,6 +203,16 @@ class GeneratorConfig
                 'Number7even.laravel_generator.path.modelsJs',
                 base_path('resources/assets/js/models/')
         );
+		
+		$this->pathTranslationDe = config(
+                'Number7even.laravel_generator.path.translation_de',
+                base_path('resources/lang/de/')
+        );
+		
+		$this->pathTranslationEn = config(
+                'Number7even.laravel_generator.path.translation_en',
+                base_path('resources/lang/en/')
+        );
     }
 
     public function loadDynamicVariables(CommandData &$commandData)
@@ -213,8 +230,11 @@ class GeneratorConfig
         $commandData->addDynamicVariable('$NAMESPACE_CONTROLLER$', $this->nsController);
         $commandData->addDynamicVariable('$NAMESPACE_REQUEST$', $this->nsRequest);
         $commandData->addDynamicVariable('$NAMESPACE_REQUEST_BASE$', $this->nsRequestBase);
+		$commandData->addDynamicVariable('$NAMESPACE_TRANSLATION_DE$', $this->nsTranslation_de);
+		$commandData->addDynamicVariable('$NAMESPACE_TRANSLATION_EN$', $this->nsTranslation_en);
 
         $commandData->addDynamicVariable('$TABLE_NAME$', $this->tableName);
+		$commandData->addDynamicVariable('$TABLE_NAME_CAMEL$', str::camel($this->tableName));
         $commandData->addDynamicVariable('$PRIMARY_KEY_NAME$', $this->primaryName);
 
         $commandData->addDynamicVariable('$MODEL_NAME$', $this->mName);
@@ -229,6 +249,7 @@ class GeneratorConfig
         $commandData->addDynamicVariable('$MODEL_NAME_PLURAL_SLASH$', $this->mSlashPlural);
         $commandData->addDynamicVariable('$MODEL_NAME_HUMAN$', $this->mHuman);
         $commandData->addDynamicVariable('$MODEL_NAME_PLURAL_HUMAN$', $this->mHumanPlural);
+		$commandData->addDynamicVariable('$MODEL_NAME_STUDLY_CASE$', $this->mStudlyCase);
 
         if (!empty($this->prefixes['route'])) {
             $commandData->addDynamicVariable('$ROUTE_NAMED_PREFIX$', $this->prefixes['route'].'.');
@@ -300,6 +321,7 @@ class GeneratorConfig
         $this->mSlashPlural = str_replace('_', '/', Str::snake($this->mSnakePlural));
         $this->mHuman = title_case(str_replace('_', ' ', Str::snake($this->mSnake)));
         $this->mHumanPlural = title_case(str_replace('_', ' ', Str::snake($this->mSnakePlural)));
+		$this->mStudlyCase = studly_case($this->mName);
     }
 
     public function prepareOptions(CommandData &$commandData)

@@ -62,8 +62,8 @@ class VueJsGeneratorCommand extends BaseCommand
 
         $requestGenerator = new APIRequestGenerator($this->commandData);
         $requestGenerator->generate();
-
-        $controllerGenerator = new ControllerGenerator($this->commandData);
+		
+		$controllerGenerator = new ControllerGenerator($this->commandData);
         $controllerGenerator->generate();
 
         $viewGenerator = new ViewGenerator($this->commandData);

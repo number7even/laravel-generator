@@ -44,6 +44,10 @@ return [
         'templates_dir'     => base_path('resources/Number7even/Number7even-generator-templates/'),
 
         'modelJs'           => base_path('resources/assets/js/models/'),
+		
+		'translation_de'           => base_path('resources/lang/de/'),
+		
+		'translation_en'           => base_path('resources/lang/en/'),
     ],
 
     /*
@@ -68,6 +72,10 @@ return [
         'request'           => 'App\Http\Requests',
 
         'api_request'       => 'App\Http\Requests\API',
+		
+		'translation_en'           => 'resources/lang/en',
+		
+		'translation_de'           => 'resources/lang/de',
     ],
 
     /*
@@ -138,7 +146,7 @@ return [
     |
     */
 
-    /*'add_on' => [
+ /*   'add_on' => [
 
         'swagger'       => false,
 

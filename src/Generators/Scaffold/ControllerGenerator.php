@@ -25,7 +25,7 @@ class ControllerGenerator extends BaseGenerator
         $this->commandData = $commandData;
         $this->path = $commandData->config->pathController;
         $this->templateType = config('Number7even.laravel_generator.templates', 'core-templates');
-        $this->fileName = $this->commandData->modelName.'Controller.php';
+        $this->fileName = $this->commandData->modelNameStudlyCase.'Controller.php';
     }
 
     public function generate()

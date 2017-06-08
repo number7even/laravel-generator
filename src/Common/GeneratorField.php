@@ -134,7 +134,9 @@ class GeneratorField
         $field->isPrimary = isset($fieldInput['primary']) ? $fieldInput['primary'] : false;
         $field->inForm = isset($fieldInput['inForm']) ? $fieldInput['inForm'] : true;
         $field->inIndex = isset($fieldInput['inIndex']) ? $fieldInput['inIndex'] : true;
-
+		$field->fieldTitle = isset($fieldInput['fieldTitle']) ? $fieldInput['fieldTitle'] : $fieldInput['name'];
+		$field->fieldLength = isset($fieldInput['max_length']) ? $fieldInput['max_length'] : '255';
+		
         return $field;
     }
 

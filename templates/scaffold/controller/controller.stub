@@ -1,24 +1,27 @@
 <?php
 
-namespace $NAMESPACE_CONTROLLER$;
+namespace App\Http\Controllers\Admin;
 
-use $NAMESPACE_REQUEST$\Create$MODEL_NAME$Request;
-use $NAMESPACE_REQUEST$\Update$MODEL_NAME$Request;
-use $NAMESPACE_REPOSITORY$\$MODEL_NAME$Repository;
-use $NAMESPACE_APP$\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
-use Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
+use App\Http\Controllers\Controller;
+use App\Models\$MODEL_NAME_STUDLY_CASE$;
+use Auth, Validator, Input, Redirect; 
+use App\Helpers\SettingOptions;
 
-class $MODEL_NAME$Controller extends AppBaseController
+
+class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
 {
-    /** @var  $MODEL_NAME$Repository */
-    private $$MODEL_NAME_CAMEL$Repository;
-
-    public function __construct($MODEL_NAME$Repository $$MODEL_NAME_CAMEL$Repo)
+    private $data = array();
+	
+	public function __construct(Request $request)
     {
-        $this->$MODEL_NAME_CAMEL$Repository = $$MODEL_NAME_CAMEL$Repo;
+        $this->data['leftNavBar'] = true;
+        $this->data['title'][0] =  array('title' => trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_title'),'url'=> 'admin/$MODEL_NAME$');
+        $this->data['parent_page'] = 'settings';
+        $this->data['current_page'] = $request->segment(2);
+		$this->data['icon_class'] = SettingOptions::Options('icon');
+		$this->data['color_class'] = SettingOptions::Options('colour');
+        $this->models = new $MODEL_NAME_STUDLY_CASE$;
     }
 
     /**
@@ -29,11 +32,10 @@ class $MODEL_NAME$Controller extends AppBaseController
      */
     public function index(Request $request)
     {
-        $this->$MODEL_NAME_CAMEL$Repository->pushCriteria(new RequestCriteria($request));
-        $$MODEL_NAME_PLURAL_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->$RENDER_TYPE$;
-
-        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.index')
-            ->with('$MODEL_NAME_PLURAL_CAMEL$', $$MODEL_NAME_PLURAL_CAMEL$);
+		$this->data['access'] =  $this->models->validAccess(Auth::id());
+        if(!isset($this->data['access']['list-$MODEL_NAME_CAMEL$']) && !isset($this->data['access']['all'])){return redirect('accessDenied');}
+        $this->data['$MODEL_NAME_PLURAL$'] =  $MODEL_NAME_STUDLY_CASE$::All();
+        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.index',$this->data);
     }
 
     /**
@@ -43,7 +45,10 @@ class $MODEL_NAME$Controller extends AppBaseController
      */
     public function create()
     {
-        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.create');
+		$this->data['access'] =  $this->models->validAccess(Auth::id());
+        if(!isset($this->data['access']['create-$MODEL_NAME_CAMEL$']) && !isset($this->data['access']['all'])){return redirect('accessDenied');}
+        $this->data['title'][1] =  array('title' => trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_add'),'url'=> '');
+        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.create',$this->data);
     }
 
     /**
@@ -53,13 +58,13 @@ class $MODEL_NAME$Controller extends AppBaseController
      *
      * @return Response
      */
-    public function store(Create$MODEL_NAME$Request $request)
+    public function store(Request $request)
     {
         $input = $request->all();
-
-        $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->create($input);
-
-        Flash::success('$MODEL_NAME_HUMAN$ saved successfully.');
+		
+		$findr = new $MODEL_NAME_STUDLY_CASE$;
+		$findr->save($input);
+		$request->session()->flash('alert-success', trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_add_message'));
 
         return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
     }
@@ -73,15 +78,7 @@ class $MODEL_NAME$Controller extends AppBaseController
      */
     public function show($id)
     {
-        $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->findWithoutFail($id);
-
-        if (empty($$MODEL_NAME_CAMEL$)) {
-            Flash::error('$MODEL_NAME_HUMAN$ not found');
-
-            return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
-        }
-
-        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.show')->with('$MODEL_NAME_CAMEL$', $$MODEL_NAME_CAMEL$);
+        
     }
 
     /**
@@ -93,15 +90,13 @@ class $MODEL_NAME$Controller extends AppBaseController
      */
     public function edit($id)
     {
-        $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->findWithoutFail($id);
-
-        if (empty($$MODEL_NAME_CAMEL$)) {
-            Flash::error('$MODEL_NAME_HUMAN$ not found');
-
-            return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
-        }
-
-        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.edit')->with('$MODEL_NAME_CAMEL$', $$MODEL_NAME_CAMEL$);
+        $this->data['access'] =  $this->models->validAccess(Auth::id());
+        if(!isset($this->data['access']['update-$MODEL_NAME_CAMEL$']) && !isset($this->data['access']['all'])){return redirect('accessDenied');}
+        $this->data['title'][1] =  array('title' => trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_edit'),'url'=> '');
+        $findr = $MODEL_NAME_STUDLY_CASE$::find($id);
+        $this->data['$MODEL_NAME_PLURAL_SNAKE$'] =  $findr;
+		
+		return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.edit',$this->data);
     }
 
     /**
@@ -112,20 +107,13 @@ class $MODEL_NAME$Controller extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, Update$MODEL_NAME$Request $request)
+    public function update($id, Request $request)
     {
-        $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->findWithoutFail($id);
-
-        if (empty($$MODEL_NAME_CAMEL$)) {
-            Flash::error('$MODEL_NAME_HUMAN$ not found');
-
-            return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
-        }
-
-        $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->update($request->all(), $id);
-
-        Flash::success('$MODEL_NAME_HUMAN$ updated successfully.');
-
+		$input = $request->all();
+		$findr = $MODEL_NAME_STUDLY_CASE$::find($id);
+        $findr->save($input);
+        $request->session()->flash('alert-success', trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_update_message'));
+		
         return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
     }
 
@@ -138,18 +126,12 @@ class $MODEL_NAME$Controller extends AppBaseController
      */
     public function destroy($id)
     {
-        $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->findWithoutFail($id);
-
-        if (empty($$MODEL_NAME_CAMEL$)) {
-            Flash::error('$MODEL_NAME_HUMAN$ not found');
-
-            return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
-        }
-
-        $this->$MODEL_NAME_CAMEL$Repository->delete($id);
-
-        Flash::success('$MODEL_NAME_HUMAN$ deleted successfully.');
-
+		
+		$this->data['access'] =  $this->models->validAccess(Auth::id());
+        if(!isset($this->data['access']['delete-$MODEL_NAME_CAMEL$']) && !isset($this->data['access']['all'])){return redirect('accessDenied');}
+        $MODEL_NAME_STUDLY_CASE$::destroy($id);
+        $request->session()->flash('alert-success', trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_delete_message'));
+        
         return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
     }
 }

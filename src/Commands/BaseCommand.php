@@ -21,6 +21,7 @@ use Number7even\Generator\Generators\TestTraitGenerator;
 use Number7even\Generator\Utils\FileUtil;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Number7even\Generator\Generators\Scaffold\TranslationGenerator;
 
 class BaseCommand extends Command
 {
@@ -49,6 +50,7 @@ class BaseCommand extends Command
     public function handle()
     {
         $this->commandData->modelName = $this->argument('model');
+		$this->commandData->modelNameStudlyCase = studly_case($this->argument('model'));
 
         $this->commandData->initCommandData();
         $this->commandData->getFields();
@@ -66,20 +68,20 @@ class BaseCommand extends Command
             $modelGenerator->generate();
         }
 
-        if (!$this->isSkip('repository')) {
+       /* if (!$this->isSkip('repository')) {
             $repositoryGenerator = new RepositoryGenerator($this->commandData);
             $repositoryGenerator->generate();
-        }
+        } */
     }
 
     public function generateAPIItems()
     {
-        if (!$this->isSkip('requests') and !$this->isSkip('api_requests')) {
+       /* if (!$this->isSkip('requests') and !$this->isSkip('api_requests')) {
             $requestGenerator = new APIRequestGenerator($this->commandData);
             $requestGenerator->generate();
-        }
-
-        if (!$this->isSkip('controllers') and !$this->isSkip('api_controller')) {
+        }*/
+		
+		if (!$this->isSkip('controllers') and !$this->isSkip('api_controller')) {
             $controllerGenerator = new APIControllerGenerator($this->commandData);
             $controllerGenerator->generate();
         }
@@ -89,7 +91,7 @@ class BaseCommand extends Command
             $routesGenerator->generate();
         }
 
-        if (!$this->isSkip('tests') and $this->commandData->getAddOn('tests')) {
+        /*if (!$this->isSkip('tests') and $this->commandData->getAddOn('tests')) {
             $repositoryTestGenerator = new RepositoryTestGenerator($this->commandData);
             $repositoryTestGenerator->generate();
 
@@ -98,14 +100,19 @@ class BaseCommand extends Command
 
             $apiTestGenerator = new APITestGenerator($this->commandData);
             $apiTestGenerator->generate();
-        }
+        }*/
     }
 
     public function generateScaffoldItems()
     {
-        if (!$this->isSkip('requests') and !$this->isSkip('scaffold_requests')) {
+        /*if (!$this->isSkip('requests') and !$this->isSkip('scaffold_requests')) {
             $requestGenerator = new RequestGenerator($this->commandData);
             $requestGenerator->generate();
+        }*/
+		
+		 if (!$this->isSkip('translation') and !$this->isSkip('scaffold_translation')) {
+            $translationGenerator = new TranslationGenerator($this->commandData);
+            $translationGenerator->generate();
         }
 
         if (!$this->isSkip('controllers') and !$this->isSkip('scaffold_controller')) {
@@ -123,10 +130,10 @@ class BaseCommand extends Command
             $routeGenerator->generate();
         }
 
-        if (!$this->isSkip('menu') and $this->commandData->config->getAddOn('menu.enabled')) {
+        /*if (!$this->isSkip('menu') and $this->commandData->config->getAddOn('menu.enabled')) {
             $menuGenerator = new MenuGenerator($this->commandData);
             $menuGenerator->generate();
-        }
+        }*/
     }
 
     public function performPostActions($runMigration = false)
@@ -136,7 +143,7 @@ class BaseCommand extends Command
         }
 
         if ($runMigration) {
-            if ($this->commandData->config->forceMigrate) {
+            /*if ($this->commandData->config->forceMigrate) {
                 $this->call('migrate');
             } elseif (!$this->commandData->getOption('fromTable') and !$this->isSkip('migration')) {
                 if ($this->commandData->getOption('jsonFromGUI')) {
@@ -144,7 +151,8 @@ class BaseCommand extends Command
                 } elseif ($this->confirm("\nDo you want to migrate database? [y|N]", false)) {
                     $this->call('migrate');
                 }
-            }
+            }*/
+			 $this->call('migrate');
         }
         if (!$this->isSkip('dump-autoload')) {
             $this->info('Generating autoload files');

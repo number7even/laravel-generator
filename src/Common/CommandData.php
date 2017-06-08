@@ -16,6 +16,7 @@ class CommandData
 
     /** @var string */
     public $modelName;
+	public $modelNameStudlyCase;
     public $commandType;
 
     /** @var GeneratorConfig */
@@ -56,6 +57,7 @@ class CommandData
         $this->fieldNamesMapping = [
             '$FIELD_NAME_TITLE$' => 'fieldTitle',
             '$FIELD_NAME$'       => 'name',
+			'$FIELD_LENGTH$'       => 'fieldLength',
         ];
 
         $this->config = new GeneratorConfig();
