@@ -1,0 +1,26 @@
+<?php 
+return [ 
+ "admin_$MODEL_NAME$_module_title"			=> "$MODEL_NAME$",
+ "admin_$MODEL_NAME$_module_sub_title"			=> "Sub title",
+ "admin_$MODEL_NAME$_module_add_new_btn"			=> "New",
+ "admin_$MODEL_NAME$_module_list_col_action"			=> "Aktion",
+ "admin_$MODEL_NAME$_module_list_action_edit_btn"			=> "Editieren",
+ "admin_$MODEL_NAME$_module_list_action_remove_btn"			=> "Entfernen",
+ "admin_$MODEL_NAME$_module_edit"			=> "$MODEL_NAME$ Editieren",  
+ "admin_$MODEL_NAME$_module_add"			=> "Neue $MODEL_NAME$ Hinzufügen",
+ "admin_$MODEL_NAME$_module_add_submit_btn"			=> "Bestätigen",
+ "admin_$MODEL_NAME$_module_add_cancel_btn"			=> "Abbrechen",
+ "admin_$MODEL_NAME$_module_add_message"			=> "Neue $MODEL_NAME$ Erfolgreich Hinzugefügt",  
+ "admin_$MODEL_NAME$_module_update_message"			=> "$MODEL_NAME$ erfolgreich Aktualisiert",  
+ "admin_$MODEL_NAME$_module_delete_message"			=> "$MODEL_NAME$ erfolgreicht entfernt",
+ "admin_$MODEL_NAME$_module_delete_model_heading"			=> "Achtung!", 
+ "admin_$MODEL_NAME$_module_delete_confirmation"			=> "Sind sie Sicher, Entfernen Bestätigen",
+ "admin_$MODEL_NAME$_module_delete_confirmation_btn_yes"			=> "Ja Entfernen",
+ "admin_$MODEL_NAME$_module_delete_confirmation_btn_no"			=> "Nein", 
+ "admin_$MODEL_NAME$_module_table_record_per_page_prefix"			=> "Records per page",
+ "admin_$MODEL_NAME$_module_table_record_per_page_suffix"			=> "Display",
+ "admin_$MODEL_NAME$_module_table_search_box"			=> "Search",
+ "admin_$MODEL_NAME$_module_table_page_of_pages"			=> "Showing page",
+ "admin_$MODEL_NAME$_module_add_error_message" => "Already exist",
+ ];
+
