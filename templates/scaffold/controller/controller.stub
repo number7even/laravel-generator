@@ -124,7 +124,7 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
 		
 		$this->data['access'] =  $this->models->validAccess(Auth::id());
