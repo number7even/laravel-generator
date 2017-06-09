@@ -65,7 +65,7 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
 		$findr = new $MODEL_NAME_STUDLY_CASE$;
 		foreach($input as $key=>$value)
 		{
-			if($key!="_token")
+			if($key!="_token" && $value!='')
 			{
 				$findr->$key = $value;
 			}
@@ -120,7 +120,7 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
 		$findr = $MODEL_NAME_STUDLY_CASE$::find($id);
         foreach($input as $key=>$value)
 		{
-			if($key!="_token" && $key!="_method")
+			if($key!="_token" && $key!="_method" && $value!='')
 			{
 				$findr->$key = $value;
 			}
