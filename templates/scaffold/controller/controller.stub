@@ -63,7 +63,14 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
         $input = $request->all();
 		
 		$findr = new $MODEL_NAME_STUDLY_CASE$;
-		$findr->save($input);
+		foreach($input as $key=>$value)
+		{
+			if($key!="_token")
+			{
+				$findr->$key = $value;
+			}
+		}
+		$findr->save();
 		$request->session()->flash('alert-success', trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_add_message'));
 
         return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
@@ -111,7 +118,14 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
     {
 		$input = $request->all();
 		$findr = $MODEL_NAME_STUDLY_CASE$::find($id);
-        $findr->save($input);
+        foreach($input as $key=>$value)
+		{
+			if($key!="_token" && $key!="_method")
+			{
+				$findr->$key = $value;
+			}
+		}
+        $findr->save();
         $request->session()->flash('alert-success', trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_update_message'));
 		
         return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));

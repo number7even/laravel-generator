@@ -162,7 +162,7 @@ class GeneratorConfig
             app_path('Repositories/')
         ).$prefix;
 
-        $this->pathModel = config('Number7even.laravel_generator.path.model', app_path('Models/')).$prefix;
+        $this->pathModel = config('Number7even.laravel_generator.path.model', app_path('Models/'));
         if (config('Number7even.laravel_generator.ignore_model_prefix', false)) {
             $this->pathModel = config('Number7even.laravel_generator.path.model', app_path('Models/'));
         }
