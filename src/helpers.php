@@ -97,7 +97,7 @@ if (!function_exists('get_template_file_path')) {
             return $path;
         }
 
-        return base_path('vendor/Number7even/'.$templateType.'/templates/'.$templateName.'.stub');
+        return base_path('vendor/number7even/'.$templateType.'/templates/'.$templateName.'.stub');
     }
 }
 
