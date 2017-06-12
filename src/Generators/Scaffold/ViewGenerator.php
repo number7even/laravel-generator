@@ -189,7 +189,7 @@ class ViewGenerator extends BaseGenerator
     {
         $this->htmlFields = [];
 
-        foreach ($this->commandData->fields as $field) {
+        foreach ($this->commandData->fields as $fieldKey=>$field) {
             if (!$field->inForm) {
                 continue;
             }
@@ -298,9 +298,11 @@ class ViewGenerator extends BaseGenerator
 //                    $fieldTemplate = '';
 //                    break;
 //            }
+            
+           
 
             $fieldTemplate = HTMLFieldGenerator::generateHTML($field, $this->templateType);
-
+          //  echo(  $layoutStr  );die;
             if (!empty($fieldTemplate)) {
                 $fieldTemplate = fill_template_with_field_data(
                     $this->commandData->dynamicVars,
@@ -309,13 +311,79 @@ class ViewGenerator extends BaseGenerator
                     $field
                 );
                 $this->htmlFields[] = $fieldTemplate;
+                $this->htmlFields[$field->name] = $fieldTemplate;
             }
         }
+
+        $module_config = \DB::table('modbuilder_mob')->where('slug_mob','=','demomod')->first();
+           
+
+        $mod = json_decode($module_config->module_config);
+        $num_of_block = $mod->module_info->num_of_block ;
+        $display_format = $mod->module_info->display_format ;
+        $block = json_decode($mod->module_info->block) ;
+       
+        if($display_format=='grid'){
+            $layoutStr ='<div class="row">';
+            $cls = 12/$num_of_block;
+            foreach ($block as $blockKey => $blockValue) {
+                $layoutStr .='<div class="col-md-'.$cls.'">';
+                if(isset($blockValue->title)){
+                    $layoutStr .='<h3>'.$blockValue->title.'</h3>';
+                }
+                if(isset($blockValue->fields) && $blockValue->fields!=''){
+                     $fieldsArr = explode(',', $blockValue->fields);
+                     foreach ($fieldsArr as $fieldKey => $fieldValue) {
+                         
+                         $layoutStr .=$this->htmlFields[$fieldValue];
+                     }
+                }
+                $layoutStr .='</div>';
+            }
+            $layoutStr .='<div>';
+        }else{
+            $layoutsTabs ='';
+            $layoutsTabsContent ='';
+            foreach ($block as $blockKey => $blockValue) {
+                $layoutsTabsContentStr = '';
+                if(isset($blockValue->title)){
+                    $blockValueTitle =$blockValue->title;
+                }else{
+                    $blockValueTitle = 'Block '.$blockKey;
+                }
+                if(isset($blockValue->fields) && $blockValue->fields!=''){
+                     $fieldsArr = explode(',', $blockValue->fields);
+                     foreach ($fieldsArr as $fieldKey => $fieldValue) {
+                         
+                         $layoutsTabsContentStr .=$this->htmlFields[$fieldValue];
+                     }
+                }
+
+
+                $layoutsTabs .='<li class="active">';
+                $layoutsTabs .='<a href="#block_tab_'.$blockKey.'" data-toggle="tab">'.$blockValueTitle.'</a>';
+                $layoutsTabs .='</li>';
+                $layoutsTabsContent .='<div class="tab-pane fade active in" id="block_tab_'.$blockKey.'">'.$layoutsTabsContentStr.'</div>';
+                
+            }
+            $layoutStr ='<div class="tabbable-line">';
+            $layoutStr .='<ul class="nav nav-tabs">';
+            
+            $layoutStr .= $layoutsTabs;
+            $layoutStr .='</ul>';
+            $layoutStr .='<div class="tab-content">';
+            $layoutStr .= $layoutsTabsContent;
+            
+            $layoutStr .='</div>';
+            $layoutStr .='<div>';
+        }    
+
+        
 
         $templateData = get_template('scaffold.views.fields', $this->templateType);
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
-        $templateData = str_replace('$FIELDS$', implode("\n\n", $this->htmlFields), $templateData);
+        $templateData = str_replace('$FIELDS$', $layoutStr, $templateData);
 
         FileUtil::createFile($this->path, 'fields.blade.php', $templateData);
         $this->commandData->commandInfo('field.blade.php created');
