@@ -23,7 +23,6 @@
         }
     ],
     "version":"5.4.0-dev",
-    "minimum-stability": "5.4.1",
     "require": {
         "php": ">=5.5.9",
         "illuminate/support": "~5.0",
