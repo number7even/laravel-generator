@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Number7even\Generator\Common\CommandData;
 use Number7even\Generator\Utils\FileUtil;
 use SplFileInfo;
+use Illuminate\Database\Schema\Blueprint;
 
 class MigrationGenerator extends BaseGenerator
 {
@@ -31,13 +32,17 @@ class MigrationGenerator extends BaseGenerator
         $templateData = str_replace('$FIELDS$', $this->generateFields(), $templateData);
 
         $tableName = $this->commandData->dynamicVars['$TABLE_NAME$'];
+		
+		\Schema::create($tableName, function (Blueprint $table) {
+            eval($this->generateFields());
+        });
 
-        $fileName = date('Y_m_d_His').'_'.'create_'.$tableName.'_table.php';
+        /*$fileName = date('Y_m_d_His').'_'.'create_'.$tableName.'_table.php';
 
-        FileUtil::createFile($this->path, $fileName, $templateData);
+        FileUtil::createFile($this->path, $fileName, $templateData);*/
 
         $this->commandData->commandComment("\nMigration created: ");
-        $this->commandData->commandInfo($fileName);
+       // $this->commandData->commandInfo($fileName);
     }
 
     private function generateFields()
