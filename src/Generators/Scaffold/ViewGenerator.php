@@ -315,7 +315,7 @@ class ViewGenerator extends BaseGenerator
             }
         }
 
-        $module_config = \DB::table('modbuilder_mob')->where('slug_mob','=','demomod')->first();
+        $module_config = \DB::table('modbuilder_mob')->where('slug_mob','=',$this->commandData->modelName)->first();
            
 
         $mod = json_decode($module_config->module_config);
