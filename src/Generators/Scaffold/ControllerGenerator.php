@@ -65,7 +65,7 @@ class ControllerGenerator extends BaseGenerator
                        $validationValueStr.=$validationValue->rule.'|'; 
                     }
                 
-                    $validationStr .= "\t\t"."'".$fieldValue->name."' => ".substr($validationValueStr,0,-1).','."\n";  
+                    $validationStr .= "\t\t"."'".$fieldValue->name."' => '".substr($validationValueStr,0,-1)."',"."\n";  
                 } 
             } 
             $validationStr = substr($validationStr,0,-1)."\n";
