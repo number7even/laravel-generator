@@ -46,8 +46,34 @@ class ControllerGenerator extends BaseGenerator
             }
         }
 
-        $templateData = fill_template($this->commandData->dynamicVars, $templateData);
+        $module_config = \DB::table('modbuilder_mob')->where('slug_mob','=','dasam')->first();
+        $mod = json_decode($module_config->module_config);
+        
 
+        $templateData = fill_template($this->commandData->dynamicVars, $templateData);
+        //print_r($templateData);
+        $validationStr ="\n\t".'$this->validate($request, ['."\n";
+        if(isset($mod->module_info->fields) && $mod->module_info->fields!=''){
+            $fieldsArr = json_decode($mod->module_info->fields);
+            foreach($fieldsArr as $fieldKey => $fieldValue) {
+                 //$actualJsonFormat[$fieldKey]['validation'] = $fieldValue->name;
+
+                
+                if(isset($fieldValue->validation)){
+                    $validationValueStr = '';
+                    foreach($fieldValue->validation as $validationKey => $validationValue) {
+                       $validationValueStr.=$validationValue->rule.'|'; 
+                    }
+                
+                    $validationStr .= "\t\t"."'".$fieldValue->name."' => ".substr($validationValueStr,0,-1).','."\n";  
+                } 
+            } 
+            $validationStr = substr($validationStr,0,-1)."\n";
+            $validationStr .="\t".']);'."\n";   
+        }
+        $templateData = str_replace('$VAILDATIONS$', $validationStr, $templateData);
+        $templateData = str_replace('$EDIT_VAILDATIONS$', $validationStr, $templateData);
+        echo $templateData;die;
         FileUtil::createFile($this->path, $this->fileName, $templateData);
 
         $this->commandData->commandComment("\nController created: ");
