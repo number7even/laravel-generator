@@ -13,6 +13,9 @@ class HTMLFieldGenerator
         switch ($field->htmlType) {
             case 'text':
             case 'textarea':
+            case 'editor':
+            case 'separator':
+            case 'line':
             case 'date':
             case 'file':
             case 'email':
