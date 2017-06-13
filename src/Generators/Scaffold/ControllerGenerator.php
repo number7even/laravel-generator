@@ -46,7 +46,7 @@ class ControllerGenerator extends BaseGenerator
             }
         }
 
-        $module_config = \DB::table('modbuilder_mob')->where('slug_mob','=','dasam')->first();
+        $module_config = \DB::table('modbuilder_mob')->where('slug_mob','=',$this->commandData->modelName)->first();
         $mod = json_decode($module_config->module_config);
         
 
@@ -73,7 +73,6 @@ class ControllerGenerator extends BaseGenerator
         }
         $templateData = str_replace('$VAILDATIONS$', $validationStr, $templateData);
         $templateData = str_replace('$EDIT_VAILDATIONS$', $validationStr, $templateData);
-        echo $templateData;die;
         FileUtil::createFile($this->path, $this->fileName, $templateData);
 
         $this->commandData->commandComment("\nController created: ");
