@@ -52,7 +52,8 @@ class ControllerGenerator extends BaseGenerator
 
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
         //print_r($templateData);
-        $validationStr ="\n\t".'$this->validate($request, ['."\n";
+		 $validationMsgStr ="\n\t ".'$messages = [';
+        $validationStr ="\n\t".'$validator = Validator::make($request, ['."\n";
         if(isset($mod->module_info->fields) && $mod->module_info->fields!=''){
             $fieldsArr = json_decode($mod->module_info->fields);
             foreach($fieldsArr as $fieldKey => $fieldValue) {
@@ -61,18 +62,23 @@ class ControllerGenerator extends BaseGenerator
                 
                 if(isset($fieldValue->validation)){
                     $validationValueStr = '';
+					$validationMsgsStr = '';
                     foreach($fieldValue->validation as $validationKey => $validationValue) {
                        $validationValueStr.=$validationValue->rule.'|'; 
+					   $validationMsgsStr.="'".$fieldValue->name.".".$validationValue->rule."' => trans('".$module_config->slug_mob.".admin_".$module_config->slug_mob."_module_error_".$fieldValue->name."_".$validationValue->rule."')"."\n";
                     }
                 
-                    $validationStr .= "\t\t"."'".$fieldValue->name."' => '".substr($validationValueStr,0,-1)."',"."\n";  
+                    $validationStr .= "\t\t"."'".$fieldValue->name."' => '".substr($validationValueStr,0,-1)."',";  
+					$validationMsgStr .= $validationMsgsStr;
                 } 
             } 
+			$validationMsgStr .='];'."\n";
             $validationStr = substr($validationStr,0,-1)."\n";
-            $validationStr .="\t".']);'."\n";   
+            $validationStr .="\t".'],$messages);'."\n";   
         }
-        $templateData = str_replace('$VAILDATIONS$', $validationStr, $templateData);
-        $templateData = str_replace('$EDIT_VAILDATIONS$', $validationStr, $templateData);
+		
+        $templateData = str_replace('$VAILDATIONS$', $validationMsgStr."\n".$validationStr, $templateData);
+        $templateData = str_replace('$EDIT_VAILDATIONS$', $validationMsgStr."\n".$validationStr, $templateData);
         FileUtil::createFile($this->path, $this->fileName, $templateData);
 
         $this->commandData->commandComment("\nController created: ");

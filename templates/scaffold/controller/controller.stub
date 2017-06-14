@@ -12,15 +12,15 @@ use App\Helpers\SettingOptions;
 class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
 {
     private $data = array();
-    
-    public function __construct(Request $request)
+	
+	public function __construct(Request $request)
     {
         $this->data['leftNavBar'] = true;
         $this->data['title'][0] =  array('title' => trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_title'),'url'=> 'admin/$MODEL_NAME$');
         $this->data['parent_page'] = 'settings';
         $this->data['current_page'] = $request->segment(2);
-        $this->data['icon_class'] = SettingOptions::Options('icon');
-        $this->data['color_class'] = SettingOptions::Options('colour');
+		$this->data['icon_class'] = SettingOptions::Options('icon');
+		$this->data['color_class'] = SettingOptions::Options('colour');
         $this->models = new $MODEL_NAME_STUDLY_CASE$;
     }
 
@@ -32,7 +32,7 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
      */
     public function index(Request $request)
     {
-        $this->data['access'] =  $this->models->validAccess(Auth::id());
+		$this->data['access'] =  $this->models->validAccess(Auth::id());
         if(!isset($this->data['access']['list-$MODEL_NAME_CAMEL$']) && !isset($this->data['access']['all'])){return redirect('accessDenied');}
         $this->data['$MODEL_NAME_PLURAL$'] =  $MODEL_NAME_STUDLY_CASE$::All();
         return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.index',$this->data);
@@ -45,7 +45,7 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
      */
     public function create()
     {
-        $this->data['access'] =  $this->models->validAccess(Auth::id());
+		$this->data['access'] =  $this->models->validAccess(Auth::id());
         if(!isset($this->data['access']['create-$MODEL_NAME_CAMEL$']) && !isset($this->data['access']['all'])){return redirect('accessDenied');}
         $this->data['title'][1] =  array('title' => trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_add'),'url'=> '');
         return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.create',$this->data);
@@ -60,21 +60,42 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
      */
     public function store(Request $request)
     {
-        $VAILDATIONS$    
-        $input = $request->all();
-        
-        $findr = new $MODEL_NAME_STUDLY_CASE$;
-        foreach($input as $key=>$value)
-        {
-            if($key!="_token" && $value!='')
-            {
-                $findr->$key = $value;
-            }
+		$VAILDATIONS$
+		if ($validator->fails()) {
+            return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.create'))->withErrors($validator)->withInput();
         }
-        $findr->save();
-        $request->session()->flash('alert-success', trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_add_message'));
+		else{
+			$input = $request->all();
+			
+			$findr = new $MODEL_NAME_STUDLY_CASE$;
+			foreach($input as $key=>$value)
+			{
+				if($key!="_token" && $value!='')
+				{
+					if(!is_null($request->file($key)))
+					{
+						$destinationPath = public_path().'/uploads/mod_imgs/';
+						$file = $request->file($key);
+						$filename = $file->getClientOriginalName();
+						$extension = $file->getClientOriginalExtension(); //if you need extension of the file
+						$featurefilename = rand(11111111, 99999999).'-'.rand(11111111, 99999999).'.'.$extension;
+						$uploadSuccess = $file->move($destinationPath, $featurefilename);
+						if($uploadSuccess)
+						{
+							$findr->$key = $featurefilename;
+						}
+					}
+					else
+					{
+						$findr->$key = $value;
+					}
+				}
+			}
+			$findr->save();
+			$request->session()->flash('alert-success', trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_add_message'));
 
-        return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
+			return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
+		}
     }
 
     /**
@@ -103,8 +124,8 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
         $this->data['title'][1] =  array('title' => trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_edit'),'url'=> '');
         $findr = $MODEL_NAME_STUDLY_CASE$::find($id);
         $this->data['$MODEL_NAME_PLURAL_SNAKE$'] =  $findr;
-        
-        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.edit',$this->data);
+		
+		return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.edit',$this->data);
     }
 
     /**
@@ -116,20 +137,42 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
      * @return Response
      */
     public function update($id, Request $request)
-    {   $EDIT_VAILDATIONS$
-        $input = $request->all();
-        $findr = $MODEL_NAME_STUDLY_CASE$::find($id);
-        foreach($input as $key=>$value)
-        {
-            if($key!="_token" && $key!="_method" && $value!='')
-            {
-                $findr->$key = $value;
-            }
+    {
+		$EDIT_VAILDATIONS$
+		if ($validator->fails()) {
+            return redirect('$ROUTE_NAMED_PREFIX$/$MODEL_NAME_PLURAL_CAMEL$/'.$id.'/edit')->withErrors($validator)->withInput();
         }
-        $findr->save();
-        $request->session()->flash('alert-success', trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_update_message'));
-        
-        return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
+		else{
+			$input = $request->all();
+			$findr = $MODEL_NAME_STUDLY_CASE$::find($id);
+			foreach($input as $key=>$value)
+			{
+				if($key!="_token" && $key!="_method" && $value!='')
+				{
+					if(!is_null($request->file($key)))
+					{
+						$destinationPath = public_path().'/uploads/mod_imgs/';
+						$file = $request->file($key);
+						$filename = $file->getClientOriginalName();
+						$extension = $file->getClientOriginalExtension(); //if you need extension of the file
+						$featurefilename = rand(11111111, 99999999).'-'.rand(11111111, 99999999).'.'.$extension;
+						$uploadSuccess = $file->move($destinationPath, $featurefilename);
+						if($uploadSuccess)
+						{
+							$findr->$key = $featurefilename;
+						}
+					}
+					else
+					{
+						$findr->$key = $value;
+					}
+				}
+			}
+			$findr->save();
+			$request->session()->flash('alert-success', trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_update_message'));
+			
+			return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
+		}
     }
 
     /**
@@ -141,8 +184,8 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        
-        $this->data['access'] =  $this->models->validAccess(Auth::id());
+		
+		$this->data['access'] =  $this->models->validAccess(Auth::id());
         if(!isset($this->data['access']['delete-$MODEL_NAME_CAMEL$']) && !isset($this->data['access']['all'])){return redirect('accessDenied');}
         $MODEL_NAME_STUDLY_CASE$::destroy($id);
         $request->session()->flash('alert-success', trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_delete_message'));
