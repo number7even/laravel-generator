@@ -61,10 +61,7 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
     public function store(Request $request)
     {
 		$VAILDATIONS$
-		if ($validator->fails()) {
-            return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.create'))->withErrors($validator)->withInput();
-        }
-		else{
+		
 			$input = $request->all();
 			
 			$findr = new $MODEL_NAME_STUDLY_CASE$;
@@ -95,7 +92,7 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
 			$request->session()->flash('alert-success', trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_add_message'));
 
 			return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
-		}
+		
     }
 
     /**
@@ -139,10 +136,7 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
     public function update($id, Request $request)
     {
 		$EDIT_VAILDATIONS$
-		if ($validator->fails()) {
-            return redirect('$ROUTE_NAMED_PREFIX$/$MODEL_NAME_PLURAL_CAMEL$/'.$id.'/edit')->withErrors($validator)->withInput();
-        }
-		else{
+		
 			$input = $request->all();
 			$findr = $MODEL_NAME_STUDLY_CASE$::find($id);
 			foreach($input as $key=>$value)
@@ -172,7 +166,7 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
 			$request->session()->flash('alert-success', trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_update_message'));
 			
 			return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
-		}
+		
     }
 
     /**
