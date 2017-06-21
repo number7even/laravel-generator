@@ -334,8 +334,9 @@ class ViewGenerator extends BaseGenerator
                 if(isset($blockValue->fields) && $blockValue->fields!=''){
                      $fieldsArr = explode(',', $blockValue->fields);
                      foreach ($fieldsArr as $fieldKey => $fieldValue) {
-                         
-                         $layoutStr .=$this->htmlFields[$fieldValue];
+                         if(isset($this->htmlFields[$fieldValue])){
+                            $layoutStr .=$this->htmlFields[$fieldValue];
+                         }
                      }
                 }
                 $layoutStr .='</div>';
