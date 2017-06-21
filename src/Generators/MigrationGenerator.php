@@ -32,10 +32,12 @@ class MigrationGenerator extends BaseGenerator
         $templateData = str_replace('$FIELDS$', $this->generateFields(), $templateData);
 
         $tableName = $this->commandData->dynamicVars['$TABLE_NAME$'];
-		
-		\Schema::create($tableName, function (Blueprint $table) {
-            eval($this->generateFields());
-        });
+		$module_config = \DB::table('modbuilder_mob')->where('slug_mob','=',$this->commandData->modelName)->first();
+        if($module_config->table_type==0){
+    		\Schema::create($tableName, function (Blueprint $table) {
+                eval($this->generateFields());
+            });
+        }    
 
         /*$fileName = date('Y_m_d_His').'_'.'create_'.$tableName.'_table.php';
 
