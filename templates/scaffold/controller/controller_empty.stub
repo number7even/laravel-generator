@@ -1,0 +1,112 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\$MODEL_NAME_STUDLY_CASE$;
+use Auth, Validator, Input, Redirect; 
+use App\Helpers\SettingOptions;
+
+
+class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
+{
+    private $data = array();
+	
+	public function __construct(Request $request)
+    {
+        $this->data['leftNavBar'] = true;
+        $this->data['title'][0] =  array('title' => trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_title'),'url'=> 'admin/$MODEL_NAME$');
+        $this->data['parent_page'] = 'settings';
+        $this->data['current_page'] = $request->segment(2);
+		$this->data['icon_class'] = SettingOptions::Options('icon');
+		$this->data['color_class'] = SettingOptions::Options('colour');
+        $this->models = new $MODEL_NAME_STUDLY_CASE$;
+    }
+
+    /**
+     * Display a listing of the $MODEL_NAME$.
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+		$this->data['access'] =  $this->models->validAccess(Auth::id());
+        if(!isset($this->data['access']['list-$MODEL_NAME_CAMEL$']) && !isset($this->data['access']['all'])){return redirect('accessDenied');}
+       
+        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.index');
+    }
+
+    /**
+     * Show the form for creating a new $MODEL_NAME$.
+     *
+     * @return Response
+     */
+    public function create()
+    {
+		
+    }
+
+    /**
+     * Store a newly created $MODEL_NAME$ in storage.
+     *
+     * @param Create$MODEL_NAME$Request $request
+     *
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+		
+    }
+
+    /**
+     * Display the specified $MODEL_NAME$.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function show($id)
+    {
+        
+    }
+
+    /**
+     * Show the form for editing the specified $MODEL_NAME$.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function edit($id)
+    {
+        
+    }
+
+    /**
+     * Update the specified $MODEL_NAME$ in storage.
+     *
+     * @param  int              $id
+     * @param Update$MODEL_NAME$Request $request
+     *
+     * @return Response
+     */
+    public function update($id, Request $request)
+    {
+		
+		
+    }
+
+    /**
+     * Remove the specified $MODEL_NAME$ from storage.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function destroy(Request $request, $id)
+    {
+		
+    }
+}
