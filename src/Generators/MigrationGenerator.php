@@ -25,11 +25,11 @@ class MigrationGenerator extends BaseGenerator
 
     public function generate()
     {
-        $templateData = get_template('migration', 'laravel-generator');
+        //$templateData = get_template('migration', 'laravel-generator');
 
-        $templateData = fill_template($this->commandData->dynamicVars, $templateData);
+        //$templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
-        $templateData = str_replace('$FIELDS$', $this->generateFields(), $templateData);
+       // $templateData = str_replace('$FIELDS$', $this->generateFields(), $templateData);
 
         $tableName = $this->commandData->dynamicVars['$TABLE_NAME$'];
 		$module_config = \DB::table('modbuilder_mob')->where('slug_mob','=',$this->commandData->modelName)->first();
