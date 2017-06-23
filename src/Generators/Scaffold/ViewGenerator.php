@@ -160,25 +160,32 @@ class ViewGenerator extends BaseGenerator
 
     private function generateIndex()
     {
-        $templateData = get_template('scaffold.views.index', $this->templateType);
+        $module_config = \DB::table('modbuilder_mob')->where('slug_mob','=',$this->commandData->modelName)->first();
+        if($module_config->feature_type_mob==1){
+                $templateData = get_template('scaffold.views.index', $this->templateType);
 
-        $templateData = fill_template($this->commandData->dynamicVars, $templateData);
+                $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
-        if ($this->commandData->getOption('datatables')) {
-            $templateData = str_replace('$PAGINATE$', '', $templateData);
-        } else {
-            $paginate = $this->commandData->getOption('paginate');
+                if ($this->commandData->getOption('datatables')) {
+                    $templateData = str_replace('$PAGINATE$', '', $templateData);
+                } else {
+                    $paginate = $this->commandData->getOption('paginate');
 
-            if ($paginate) {
-                $paginateTemplate = get_template('scaffold.views.paginate', $this->templateType);
+                    if ($paginate) {
+                        $paginateTemplate = get_template('scaffold.views.paginate', $this->templateType);
 
-                $paginateTemplate = fill_template($this->commandData->dynamicVars, $paginateTemplate);
+                        $paginateTemplate = fill_template($this->commandData->dynamicVars, $paginateTemplate);
 
-                $templateData = str_replace('$PAGINATE$', $paginateTemplate, $templateData);
-            } else {
-                $templateData = str_replace('$PAGINATE$', '', $templateData);
-            }
-        }
+                        $templateData = str_replace('$PAGINATE$', $paginateTemplate, $templateData);
+                    } else {
+                        $templateData = str_replace('$PAGINATE$', '', $templateData);
+                    }
+                }
+        }else{
+            $templateData = get_template('scaffold.views.index_empty', $this->templateType);
+
+            $templateData = fill_template($this->commandData->dynamicVars, $templateData);
+        } 
 
         FileUtil::createFile($this->path, 'index.blade.php', $templateData);
 
