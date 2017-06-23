@@ -76,17 +76,21 @@ class ViewGenerator extends BaseGenerator
     }
 
     private function generateTable()
-    {
-        if ($this->commandData->getAddOn('datatables')) {
-            $templateData = $this->generateDataTableBody();
-            $this->generateDataTableActions();
-        } else {
-            $templateData = $this->generateBladeTableBody();
-        }
+    {   
+        $module_config = \DB::table('modbuilder_mob')->where('slug_mob','=',$this->commandData->modelName)->first();
+        if($module_config->feature_type_mob==1){
 
-        FileUtil::createFile($this->path, 'table.blade.php', $templateData);
+            if ($this->commandData->getAddOn('datatables')) {
+                $templateData = $this->generateDataTableBody();
+                $this->generateDataTableActions();
+            } else {
+                $templateData = $this->generateBladeTableBody();
+            }
 
-        $this->commandData->commandInfo('table.blade.php created');
+            FileUtil::createFile($this->path, 'table.blade.php', $templateData);
+
+            $this->commandData->commandInfo('table.blade.php created');
+        }    
     }
 
     private function generateDataTableBody()
