@@ -91,7 +91,7 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
 			$findr->save();
 			$request->session()->flash('alert-success', trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_add_message'));
 
-			return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
+			return redirect(route('$MODEL_NAME_PLURAL_CAMEL$.index'));
 		
     }
 
@@ -165,7 +165,7 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
 			$findr->save();
 			$request->session()->flash('alert-success', trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_update_message'));
 			
-			return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
+			return redirect(route('$MODEL_NAME_PLURAL_CAMEL$.index'));
 		
     }
 
@@ -184,6 +184,6 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
         $MODEL_NAME_STUDLY_CASE$::destroy($id);
         $request->session()->flash('alert-success', trans('$MODEL_NAME$.admin_$MODEL_NAME$_module_delete_message'));
         
-        return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
+        return redirect(route('$MODEL_NAME_PLURAL_CAMEL$.index'));
     }
 }
