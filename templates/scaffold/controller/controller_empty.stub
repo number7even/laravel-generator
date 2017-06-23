@@ -35,7 +35,7 @@ class $MODEL_NAME_STUDLY_CASE$Controller extends Controller
 		$this->data['access'] =  $this->models->validAccess(Auth::id());
         if(!isset($this->data['access']['list-$MODEL_NAME_CAMEL$']) && !isset($this->data['access']['all'])){return redirect('accessDenied');}
        
-        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.index');
+        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.index',$this->data);
     }
 
     /**
