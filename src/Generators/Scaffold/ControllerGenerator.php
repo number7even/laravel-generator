@@ -102,7 +102,9 @@ class ControllerGenerator extends BaseGenerator
             $templateData = str_replace('$VAILDATIONS$', $validatorValues, $templateData);
             $templateData = str_replace('$EDIT_VAILDATIONS$', $validatorValuesEdit, $templateData);
        }else{
+
          $templateData = get_template('scaffold.controller.controller_empty', 'laravel-generator');
+          $templateData = fill_template($this->commandData->dynamicVars, $templateData);
        }
         FileUtil::createFile($this->path, $this->fileName, $templateData);
 
