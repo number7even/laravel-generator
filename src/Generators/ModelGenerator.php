@@ -40,7 +40,7 @@ class ModelGenerator extends BaseGenerator
     }
 
     public function generate()
-    {
+    {   
         $templateData = get_template('model.model', 'laravel-generator');
 
         $templateData = $this->fillTemplate($templateData);
@@ -73,6 +73,15 @@ class ModelGenerator extends BaseGenerator
             $primary = infy_tab()."protected \$primaryKey = '".$this->commandData->getOption('primary')."';\n";
         } else {
             $primary = '';
+        }
+        //get primary ID 
+        $module_config = \DB::table('modbuilder_mob')->where('slug_mob','=',$this->commandData->modelName)->first();
+        $columns = \DB::select('show columns from ' . $this->table);
+        $fieldName = array();
+        foreach ($columns as $key=>$value) {
+          if($value->Extra=='auto_increment' && strstr($value->Type,'int') && $value->Key=='PRI'){
+                $primary = infy_tab()."protected \$primaryKey = '".$value->Field."';\n";
+          }
         }
 
         $templateData = str_replace('$PRIMARY$', $primary, $templateData);
