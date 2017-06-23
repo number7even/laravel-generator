@@ -30,8 +30,8 @@ class ControllerGenerator extends BaseGenerator
 
     public function generate()
     {   
-         $module_config = \DB::table('modbuilder_mob')->where('slug_mob','=','testdba')->first();
-         // $module_config = \DB::table('modbuilder_mob')->where('slug_mob','=',$this->commandData->modelName'')->first();
+         //$module_config = \DB::table('modbuilder_mob')->where('slug_mob','=','testdba')->first();
+         $module_config = \DB::table('modbuilder_mob')->where('slug_mob','=',$this->commandData->modelName)->first();
          if($module_config->feature_type_mob==1){
         
             if ($this->commandData->getAddOn('datatables')) {
