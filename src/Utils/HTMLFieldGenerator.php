@@ -15,7 +15,13 @@ class HTMLFieldGenerator
             case 'textarea':
             case 'editor':
             case 'separator':
+            $fieldTemplate = get_template('scaffold.fields.separator', $templateType);
             case 'line':
+            $fieldTemplate = get_template('scaffold.fields.line', $templateType);
+             case 'header':
+            $fieldTemplate = get_template('scaffold.fields.header', $templateType);
+            case 'paragraph':
+            $fieldTemplate = get_template('scaffold.fields.paragraph', $templateType);
             case 'date':
             case 'file':
             case 'email':

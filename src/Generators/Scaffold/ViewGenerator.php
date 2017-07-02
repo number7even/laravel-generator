@@ -344,9 +344,31 @@ class ViewGenerator extends BaseGenerator
                 }
                 if(isset($blockValue->fields) && $blockValue->fields!=''){
                      $fieldsArr = explode(',', $blockValue->fields);
+                     $countHeader = 0;
+                     $countParagraph = 0;
                      foreach ($fieldsArr as $fieldKey => $fieldValue) {
                          if(isset($this->htmlFields[$fieldValue])){
                             $layoutStr .=$this->htmlFields[$fieldValue];
+                         }
+                         if($fieldValue=='separator'){
+                            $separator = get_template('scaffold.fields.separator', $this->templateType);
+                            $layoutStr .= str_replace('$FIELD_NAME_TITLE$', 'separator',  $separator);
+                         }
+                         if($fieldValue=='line'){
+                            $line = get_template('scaffold.fields.line', $this->templateType);
+                             $layoutStr .= str_replace('$FIELD_NAME_TITLE$', 'line',  $line);
+                         }
+                         if($fieldValue=='header'){
+                            $header = get_template('scaffold.fields.header', $this->templateType);
+                            $header = str_replace('$HEADER_TITLE$', $blockValue->header[$countHeader],  $header);
+                            $layoutStr .= str_replace('$FIELD_NAME_TITLE$', 'header',  $header);
+                            $countHeader++;
+                         }
+                         if($fieldValue=='paragraph'){
+                            $paragraph = get_template('scaffold.fields.paragraph', $this->templateType);
+                             $paragraph = str_replace('$PARAGRAPH_TITLE$', $blockValue->paragraph[$countParagraph],  $paragraph);
+                            $layoutStr .= str_replace('$FIELD_NAME_TITLE$', 'paragraph',  $paragraph);
+                            $countParagraph++;
                          }
                      }
                 }
@@ -366,8 +388,31 @@ class ViewGenerator extends BaseGenerator
                 if(isset($blockValue->fields) && $blockValue->fields!=''){
                      $fieldsArr = explode(',', $blockValue->fields);
                      foreach ($fieldsArr as $fieldKey => $fieldValue) {
+                         if(isset($this->htmlFields[$fieldValue])){
+                            $layoutsTabsContentStr .=$this->htmlFields[$fieldValue];
+                         }
                          
-                         $layoutsTabsContentStr .=$this->htmlFields[$fieldValue];
+
+                         if($fieldValue=='separator'){
+                            $separator = get_template('scaffold.fields.separator', $this->templateType);
+                            $layoutsTabsContentStr .= str_replace('$FIELD_NAME_TITLE$', 'separator',  $separator);
+                         }
+                         if($fieldValue=='line'){
+                            $line = get_template('scaffold.fields.line', $this->templateType);
+                             $layoutsTabsContentStr .= str_replace('$FIELD_NAME_TITLE$', 'line',  $line);
+                         }
+                         if($fieldValue=='header'){
+                            $header = get_template('scaffold.fields.header', $this->templateType);
+                            $header = str_replace('$HEADER_TITLE$', $blockValue->header[$countHeader],  $header);
+                            $layoutsTabsContentStr .= str_replace('$FIELD_NAME_TITLE$', 'header',  $header);
+                            $countHeader++;
+                         }
+                         if($fieldValue=='paragraph'){
+                            $paragraph = get_template('scaffold.fields.paragraph', $this->templateType);
+                             $paragraph = str_replace('$PARAGRAPH_TITLE$', $blockValue->paragraph[$countParagraph],  $paragraph);
+                            $layoutsTabsContentStr .= str_replace('$FIELD_NAME_TITLE$', 'paragraph',  $paragraph);
+                            $countParagraph++;
+                         }
                      }
                 }
 
