@@ -387,6 +387,8 @@ class ViewGenerator extends BaseGenerator
                 }
                 if(isset($blockValue->fields) && $blockValue->fields!=''){
                      $fieldsArr = explode(',', $blockValue->fields);
+                     $countHeader = 0;
+                     $countParagraph = 0;
                      foreach ($fieldsArr as $fieldKey => $fieldValue) {
                          if(isset($this->htmlFields[$fieldValue])){
                             $layoutsTabsContentStr .=$this->htmlFields[$fieldValue];
@@ -415,12 +417,16 @@ class ViewGenerator extends BaseGenerator
                          }
                      }
                 }
-
-
-                $layoutsTabs .='<li class="active">';
+                $tabActive = '';
+                $tabContentActive = '';
+                if($blockKey==0){
+                    $tabActive = ' class="active" ';
+                    $tabContentActive = ' active in ';
+                }
+                $layoutsTabs .='<li '.$tabActive.'>';
                 $layoutsTabs .='<a href="#block_tab_'.$blockKey.'" data-toggle="tab">'.$blockValueTitle.'</a>';
                 $layoutsTabs .='</li>';
-                $layoutsTabsContent .='<div class="tab-pane fade active in" id="block_tab_'.$blockKey.'">'.$layoutsTabsContentStr.'</div>';
+                $layoutsTabsContent .='<div class="tab-pane fade '.$tabContentActive.'" id="block_tab_'.$blockKey.'">'.$layoutsTabsContentStr.'</div>';
                 
             }
             $layoutStr ='<div class="tabbable-line">';
