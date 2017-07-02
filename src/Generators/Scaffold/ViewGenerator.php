@@ -405,13 +405,13 @@ class ViewGenerator extends BaseGenerator
                          }
                          if($fieldValue=='header'){
                             $header = get_template('scaffold.fields.header', $this->templateType);
-                            $header = str_replace('$HEADER_TITLE$', $blockValue->header[$countHeader],  $header);
+                            $header = str_replace('$HEADER_TITLE$', (isset($blockValue->header[$countHeader])?$blockValue->header[$countHeader]:''),  $header);
                             $layoutsTabsContentStr .= str_replace('$FIELD_NAME_TITLE$', 'header',  $header);
                             $countHeader++;
                          }
                          if($fieldValue=='paragraph'){
                             $paragraph = get_template('scaffold.fields.paragraph', $this->templateType);
-                             $paragraph = str_replace('$PARAGRAPH_TITLE$', $blockValue->paragraph[$countParagraph],  $paragraph);
+                             $paragraph = str_replace('$PARAGRAPH_TITLE$', (isset($blockValue->paragraph[$countParagraph])?$blockValue->paragraph[$countParagraph]:''),  $paragraph);
                             $layoutsTabsContentStr .= str_replace('$FIELD_NAME_TITLE$', 'paragraph',  $paragraph);
                             $countParagraph++;
                          }
