@@ -332,7 +332,7 @@ class ViewGenerator extends BaseGenerator
         $mod = json_decode($module_config->module_config);
         $num_of_block = $mod->module_info->num_of_block ;
         $display_format = $mod->module_info->display_format ;
-        $block = json_decode($mod->module_info->block) ;
+        $block = $mod->module_info->block ;
        
         if($display_format=='grid'){
             $layoutStr ='<div class="row">';
