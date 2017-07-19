@@ -374,7 +374,7 @@ class ViewGenerator extends BaseGenerator
                 }
                 $layoutStr .='</div>';
             }
-            $layoutStr .='<div>';
+            $layoutStr .='</div>';
         }else{
             $layoutsTabs ='';
             $layoutsTabsContent ='';
@@ -438,7 +438,7 @@ class ViewGenerator extends BaseGenerator
             $layoutStr .= $layoutsTabsContent;
             
             $layoutStr .='</div>';
-            $layoutStr .='<div>';
+            $layoutStr .='</div>';
         }    
 
         
