@@ -62,7 +62,7 @@ class ControllerGenerator extends BaseGenerator
             if(isset($mod->module_info->fields) && $mod->module_info->fields!=''){
                 $validationStrCon ='';
                  $validationStrConEdit ='';
-                $fieldsArr = json_decode($mod->module_info->fields);
+                $fieldsArr = $mod->module_info->fields;
                 foreach($fieldsArr as $fieldKey => $fieldValue) {
                      //$actualJsonFormat[$fieldKey]['validation'] = $fieldValue->name;
 
